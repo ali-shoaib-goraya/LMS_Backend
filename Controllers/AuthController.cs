@@ -14,12 +14,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto request)
+    public async Task<IActionResult> Register([FromBody] RegisterBaseDto request)
     {
         if (!ModelState.IsValid)
             return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)) });
 
-        var (isSuccessful, errorMessage) = await _authService.RegisterUserAsync(request.Email, request.Password, request.Type);
+        var (isSuccessful, errorMessage) = await _authService.RegisterUserAsync(request.Email, request.Password, request.Type, request.FirstName, request.LastName, request.Role);
         if (!isSuccessful)
             return BadRequest(new { success = false, message = errorMessage });
 
@@ -32,7 +32,7 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)) });
 
-        var response = await _authService.LoginUserAsync(request.Email, request.Password);
+        var response = await _authService.LoginUserAsync(request.Email, request.Password, request.Type);
         if (response.AccessToken == null)
             return Unauthorized(new { success = false, message = response.Message });
 
@@ -42,7 +42,7 @@ public class AuthController : ControllerBase
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto request)
     {
-        var response = await _authService.RefreshTokensAsync(request.Token);
+        var response = await _authService.RefreshTokensAsync(request.refreshToken);
         if (response.AccessToken == null)
             return Unauthorized(new { success = false, message = response.Message });
 
@@ -61,3 +61,4 @@ public class AuthController : ControllerBase
     }
 
 }
+

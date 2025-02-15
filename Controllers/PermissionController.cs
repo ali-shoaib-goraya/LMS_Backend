@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dynamic_RBAMS.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class PermissionController : ControllerBase
@@ -22,7 +23,7 @@ namespace Dynamic_RBAMS.Controllers
             _roleManager = roleManager;
             _context = context; // Initialize _context
         }
-        [Authorize]
+        
         [HttpPost("Create")]
         public async Task<IActionResult> CreatePermission([FromBody] PermissionDto permissionDto)
         {
@@ -129,7 +130,7 @@ namespace Dynamic_RBAMS.Controllers
                 // Return a confirmation message
                 return Ok(new { message = "Permission deleted successfully", response });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log exception (if using a logging framework)
                 return StatusCode(500, "An error occurred while deleting the permission.");

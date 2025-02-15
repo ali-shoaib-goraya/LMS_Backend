@@ -1,61 +1,67 @@
-﻿//using Dynamic_RBAMS.Models;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNetCore.Mvc;
+﻿using Dynamic_RBAMS.DTOs.AuthDtos;
+using Dynamic_RBAMS.DTOs;
+using Dynamic_RBAMS.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
+namespace Dynamic_RBAMS.Controllers
+{
+    [Route("api/users")]
+        [ApiController]
+        public class UserController : ControllerBase
+        {
+            private readonly IUserService _userService;
 
-//namespace Dynamic_RBAMS.Controllers
-//{
-//    [ApiController]
-//    [Route("api/[controller]")]
-//    public class UserController : ControllerBase
-//    {
-//        private readonly UserManager<ApplicationUser> _userManager;
+            public UserController(IUserService userService)
+            {
+                _userService = userService;
+            }
 
-//        public UserController(UserManager<ApplicationUser> userManager)
-//        {
-//            _userManager = userManager;
-//        }
+            /// Register a new Teacher
+            /// </summary>
+            [HttpPost("register-teacher")]
+            //[Authorize(Roles = "UniversityAdmin, CampusAdmin")] // Restrict access
+            public async Task<IActionResult> RegisterTeacher([FromBody] RegisterEmployeeDto dto)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiResponseDto(400, "Invalid request data", ModelState.Values));
+                }
 
-//        [HttpPost("CreateUser")]
-//        public async Task<IActionResult> CreateUser([FromBody] UserRegistrationDto model)
-//        {
-//            var user = new ApplicationUser
-//            {
-//                UserName = model.Username,
-//                Email = model.Email
-//            };
+                var response = await _userService.RegisterTeacherAsync(dto);
+                return StatusCode(response.StatusCode, response);
+            }
 
-//            var result = await _userManager.CreateAsync(user, model.Password);
-//            if (result.Succeeded)
-//                return Ok("User created successfully.");
+         
+            /// Register a new University Admin
+            /// </summary>
+            [HttpPost("register-university-admin")]
+            //[Authorize(Roles = "SuperAdmin")] // Restrict to SuperAdmin
+            public async Task<IActionResult> RegisterUniversityAdmin([FromBody] RegisterUniversityAdminDto dto)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiResponseDto(400, "Invalid request data", ModelState.Values));
+                }
 
-//            return BadRequest(result.Errors);
-//        }
+                var response = await _userService.RegisterUniversityAdminAsync(dto);
+                return StatusCode(response.StatusCode, response);
+            }
 
-//        [HttpPost("AssignRoleToUser")]
-//        public async Task<IActionResult> AssignRoleToUser(string userId, string roleName)
-//        {
-//            var user = await _userManager.FindByIdAsync(userId);
-//            if (user == null)
-//                return NotFound("User not found.");
+            /// Register a new Campus Admin
+            /// </summary>
+            [HttpPost("register-campus-admin")]
+            //[Authorize(Roles = "UniversityAdmin")] // University Admins can add Campus Admins
+            public async Task<IActionResult> RegisterCampusAdmin([FromBody] RegisterCampusAdminDto dto)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiResponseDto(400, "Invalid request data", ModelState.Values));
+                }
 
-//            var result = await _userManager.AddToRoleAsync(user, roleName);
-//            if (result.Succeeded)
-//                return Ok("Role assigned to user successfully.");
-
-//            return BadRequest(result.Errors);
-//        }
-
-//        [HttpGet("GetUserRoles/{userId}")]
-//        public async Task<IActionResult> GetUserRoles(string userId)
-//        {
-//            var user = await _userManager.FindByIdAsync(userId);
-//            if (user == null)
-//                return NotFound("User not found.");
-
-//            var roles = await _userManager.GetRolesAsync(user);
-//            return Ok(roles);
-//        }
-//    }
-
-//}
+                var response = await _userService.RegisterCampusAdminAsync(dto);
+                return StatusCode(response.StatusCode, response);
+            }
+        }
+    }

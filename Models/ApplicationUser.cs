@@ -5,18 +5,27 @@ namespace Dynamic_RBAMS.Models
 {
     public enum UserType // Changed to public
     {
-        Faculty,
-        Student
-    }
+        UniversityAdmin,
+        CampusAdmin,
+        Teacher,
+        Hod,
+        StaffMember,
+        Student, 
+        
+    } 
     public class ApplicationUser : IdentityUser
     {
-        public string? FullName { get; set; }
+        public string FirstName { get; set; }
 
-        public bool Status { get; set; } = true; // Changed from "Active" to true
+        public string? LastName { get; set; }
 
-        public string Type { get; set; } = UserType.Student.ToString(); // Changed to use UserType enum directly
+        public string? Address { get; set; }
 
-        public string? Role { get; set; }
+        public string? Gender { get; set; }
+
+        public string? EmergencyContact { get; set; }
+
+        public string Type { get; set; }  
     }
 } 
 

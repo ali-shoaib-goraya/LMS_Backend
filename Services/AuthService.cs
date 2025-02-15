@@ -12,25 +12,33 @@ using Microsoft.IdentityModel.Tokens;
 public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly IConfiguration _configuration;
     private readonly ApplicationDbContext _dbContext;
 
-    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext dbContext)
+    public AuthService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IConfiguration configuration, ApplicationDbContext dbContext)
     {
         _userManager = userManager;
+        _roleManager = roleManager;
         _configuration = configuration;
         _dbContext = dbContext;
+        
     }
 
-    public async Task<(bool IsSuccessful, string? ErrorMessage)> RegisterUserAsync(string email, string password, string userType)
+    public async Task<(bool IsSuccessful, string ErrorMessage)> RegisterUserAsync(string email, string password, string userType, string firstName, string lastName, string role)
     {
         // Convert string to UserType 
         if (!Enum.TryParse(userType, out UserType userTypeEnum))
         {
             return (false, "Invalid user type.");
         }
-
-        var user = new ApplicationUser { UserName = email, Email = email, Type = userTypeEnum.ToString() };
+        // Check if role exists
+        if (!await _roleManager.RoleExistsAsync(role))
+        {
+            return (false, "Role does not exist.");
+        }
+        // create user
+        var user = new ApplicationUser { UserName = email, Email = email, Type = userTypeEnum.ToString(), FirstName = firstName, LastName = lastName };
         var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
@@ -38,11 +46,12 @@ public class AuthService : IAuthService
             var errorMessage = result.Errors.FirstOrDefault()?.Description ?? "Registration failed.";
             return (false, errorMessage);
         }
-
-        return (true, null);
+        // Assign role to user
+        await _userManager.AddToRoleAsync(user, role);
+        return (true, string.Empty);
     }
 
-    public async Task<AuthResponseDto> LoginUserAsync(string email, string password)
+    public async Task<AuthResponseDto> LoginUserAsync(string email, string password, string userType)
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
@@ -51,6 +60,10 @@ public class AuthService : IAuthService
         var isValidPassword = await _userManager.CheckPasswordAsync(user, password);
         if (!isValidPassword)
             return new AuthResponseDto { Message = "Invalid email or password." };
+
+        if (user.Type != userType)
+            return new AuthResponseDto { Message = "Invalid email or password" };
+        
 
         // Revoke all existing refresh tokens for the user
         await RevokeAllUserTokensAsync(user.Id);
@@ -81,7 +94,7 @@ public class AuthService : IAuthService
 
         var accessToken = await GenerateJwtTokenAsync(user);
         var newRefreshToken = GenerateRefreshToken();
-        var newRefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+        var newRefreshTokenExpiry = DateTime.UtcNow.AddSeconds(60);
 
         await SaveRefreshTokenAsync(user, newRefreshToken, newRefreshTokenExpiry);
         await RevokeRefreshTokenAsync(refreshToken);
@@ -89,7 +102,7 @@ public class AuthService : IAuthService
         return new AuthResponseDto
         {
             AccessToken = accessToken,
-            AccessTokenExpiry = DateTime.UtcNow.AddMinutes(30), // Match access token expiry
+            AccessTokenExpiry = DateTime.UtcNow.AddSeconds(30), // Match access token expiry
             RefreshToken = newRefreshToken,
             RefreshTokenExpiry = newRefreshTokenExpiry,
             Message = "Token refreshed successfully."
@@ -98,11 +111,14 @@ public class AuthService : IAuthService
 
     public async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
     {
-        var expiryTime = DateTime.UtcNow.AddMinutes(30); // Access token expiry
-        var claims = new[]
+        var expiryTime = DateTime.UtcNow.AddSeconds(50); // Access token expiry
+
+        var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
+            new Claim("Email", user.Email ?? string.Empty),
+            new Claim("UserId", user.Id.ToString()),
+            new Claim("Type", user.Type ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
@@ -124,13 +140,17 @@ public class AuthService : IAuthService
     {
         var principal = await GetPrincipalFromExpiredTokenAsync(token);
         if (principal == null)
-            return null;
+            throw new Exception("Invalid token");
 
         var userId = principal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
         if (string.IsNullOrEmpty(userId))
-            return null;
+            throw new Exception("Invalid token");
 
-        return await _userManager.FindByIdAsync(userId);
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            throw new Exception("User not found");
+
+        return user;
     }
 
     public Task<ClaimsPrincipal> GetPrincipalFromExpiredTokenAsync(string token)
@@ -197,7 +217,7 @@ public class AuthService : IAuthService
         await _dbContext.SaveChangesAsync();
     }
 
-    private async Task<(ApplicationUser user, bool isValid, DateTime expiry)> ValidateRefreshTokenAsync(string refreshToken)
+    private async Task<(ApplicationUser? user, bool isValid, DateTime expiry)> ValidateRefreshTokenAsync(string refreshToken)
     {
         var tokenRecord = await _dbContext.Set<RefreshToken>()
             .Include(rt => rt.User)
@@ -232,7 +252,7 @@ public class AuthService : IAuthService
         tokenRecord.IsRevoked = true; // Mark the token as revoked
         await _dbContext.SaveChangesAsync();
 
-        return (true, null);
+        return (true, string.Empty);
     }
 
 }
