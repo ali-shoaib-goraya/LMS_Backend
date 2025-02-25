@@ -1,4 +1,4 @@
-﻿using Dynamic_RBAMS.Models;
+﻿using Dynamic_RBAMS.Features.PermissionsManagement;
 
 namespace Dynamic_RBAMS.Data
 {

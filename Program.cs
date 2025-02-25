@@ -1,10 +1,6 @@
 ﻿using Dynamic_RBAMS;
 using Dynamic_RBAMS.Data;
-using Dynamic_RBAMS.Interfaces;
 using Dynamic_RBAMS.Middlewares;
-using Dynamic_RBAMS.Models;
-using Dynamic_RBAMS.Repos;
-using Dynamic_RBAMS.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +8,20 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Dynamic_RBAMS.AutoMapper;
 using System.Text;
+using Dynamic_RBAMS.Features.RoleManagement;
+using Dynamic_RBAMS.Features.Common.Services;
+using Dynamic_RBAMS.Features.DepartmentManagement.Repositories;
+using Dynamic_RBAMS.Features.DepartmentManagement.Services;
+using Dynamic_RBAMS.Features.Common.Repositories;
+using Dynamic_RBAMS.Features.UserManagement.Services;
+using Dynamic_RBAMS.Features.UserManagement.Models;
+using Dynamic_RBAMS.Features.AuthenticationManagement.Services;
+using Dynamic_RBAMS.Features.SchoolManagement.Repositories;
+using Dynamic_RBAMS.Features.SchoolManagement.Services;
+using Dynamic_RBAMS.Features.CampusManagement.Repositories;
+using Dynamic_RBAMS.Features.CampusManagement.Services;
+using Dynamic_RBAMS.Features.UniveristyManagement.Repositories;
+using Dynamic_RBAMS.Features.UniveristyManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +75,11 @@ builder.Services.AddScoped<RoleManager<ApplicationRole>>();
 builder.Services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, string>>();
 builder.Services.AddScoped<IRoleStore<ApplicationRole>, RoleStore<ApplicationRole, ApplicationDbContext, string>>();
 
+// Enable access to the HttpContext globally
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+builder.Services.AddScoped<ICampusEntityAuthorizationService, CampusEntityAuthorizationService>();
+builder.Services.AddScoped<IEntityRepository, EntityRepository>();
 
 // Register Services and Repositories.
 builder.Services.AddScoped<IAuthService, AuthService>();

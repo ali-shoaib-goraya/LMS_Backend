@@ -22,7 +22,579 @@ namespace Dynamic_RBAMS.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.AuthenticationManagment.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.BatchManagment.ProgramBatch", b =>
+                {
+                    b.Property<int>("BatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BatchId"));
+
+                    b.Property<string>("BatchName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BatchId");
+
+                    b.HasIndex("ProgramId");
+
+                    b.ToTable("ProgramsBatches");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.CampusManagement.Campus", b =>
+                {
+                    b.Property<int>("CampusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CampusId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CampusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UniversityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CampusId");
+
+                    b.HasIndex("UniversityId");
+
+                    b.ToTable("Campuses");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.Common.Models.DepartmentFaculty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FacultyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("DepartmentFaculties");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.Common.Models.FacultyCampus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FacultyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampusId");
+
+                    b.HasIndex("FacultyId", "CampusId")
+                        .IsUnique();
+
+                    b.ToTable("FacultiesCampuses");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.CourseManagement.Course", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
+
+                    b.Property<int?>("ConnectedCourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CourseCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreditHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsCompulsory")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLab")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTheory")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Objective")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CourseId");
+
+                    b.HasIndex("ConnectedCourseId")
+                        .IsUnique()
+                        .HasFilter("[ConnectedCourseId] IS NOT NULL");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.CourseManagement.CourseSection", b =>
+                {
+                    b.Property<int>("CourseSectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseSectionId"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CourseSectionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EnrolledStudents")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FacultyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SemesterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CourseSectionId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("FacultyId");
+
+                    b.HasIndex("SectionId");
+
+                    b.HasIndex("SemesterId");
+
+                    b.ToTable("CourseSections");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.DepartmentManagement.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Vision")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.HasIndex("SchoolId");
+
+                    b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.EnrollmentManagement.Enrollment", b =>
+                {
+                    b.Property<int>("EnrollmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentId"));
+
+                    b.Property<int>("AttendancePercentage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseSectionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EnrollmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Grade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EnrollmentId");
+
+                    b.HasIndex("CourseSectionId");
+
+                    b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.PermissionsManagement.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.ProgramManagement.Programs", b =>
+                {
+                    b.Property<int>("ProgramId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProgramId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreditRequired")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DegreeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Duration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProgramName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProgramId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Programs");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.SchoolManagement.School", b =>
+                {
+                    b.Property<int>("SchoolId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SchoolId"));
+
+                    b.Property<bool>("Academic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CampusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SchoolName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SchoolId");
+
+                    b.HasIndex("CampusId");
+
+                    b.ToTable("Schools");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.SectionManagement.ProgramBatchSection", b =>
+                {
+                    b.Property<int>("SectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProgramBatchBatchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SectionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SectionId");
+
+                    b.HasIndex("ProgramBatchBatchId");
+
+                    b.ToTable("ProgramsBatchSections");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.SemesterManagement.Semester", b =>
+                {
+                    b.Property<int>("SemesterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SemesterId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SemesterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SemesterId");
+
+                    b.ToTable("Semesters");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UniveristyManagement.University", b =>
+                {
+                    b.Property<int>("UniversityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniversityId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UniversityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UniversityId");
+
+                    b.ToTable("Universities");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -107,576 +679,6 @@ namespace Dynamic_RBAMS.Migrations
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.UseTptMappingStrategy();
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Campus", b =>
-                {
-                    b.Property<int>("CampusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CampusId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CampusName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShortName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UniversityId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("CampusId");
-
-                    b.HasIndex("UniversityId");
-
-                    b.ToTable("Campuses");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Course", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
-
-                    b.Property<int?>("ConnectedCourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CourseName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CreditHours")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsCompulsory")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsLab")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsTheory")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Objective")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CourseId");
-
-                    b.HasIndex("ConnectedCourseId")
-                        .IsUnique()
-                        .HasFilter("[ConnectedCourseId] IS NOT NULL");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.CourseSection", b =>
-                {
-                    b.Property<int>("CourseSectionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseSectionId"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CourseSectionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EnrolledStudents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacultyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SemesterId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("CourseSectionId");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("FacultyId");
-
-                    b.HasIndex("SectionId");
-
-                    b.HasIndex("SemesterId");
-
-                    b.ToTable("CourseSections");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Department", b =>
-                {
-                    b.Property<int>("DepartmentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DepartmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SchoolId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShortName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Vision")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DepartmentId");
-
-                    b.HasIndex("SchoolId");
-
-                    b.ToTable("Departments");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.DepartmentFaculty", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FacultyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FacultyId");
-
-                    b.HasIndex("DepartmentId", "FacultyId")
-                        .IsUnique();
-
-                    b.ToTable("DepartmentFaculties");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Enrollment", b =>
-                {
-                    b.Property<int>("EnrollmentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentId"));
-
-                    b.Property<int>("AttendancePercentage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseSectionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EnrollmentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Grade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EnrollmentId");
-
-                    b.HasIndex("CourseSectionId");
-
-                    b.ToTable("Enrollments");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.FacultyCampus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CampusId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FacultyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CampusId");
-
-                    b.HasIndex("FacultyId", "CampusId")
-                        .IsUnique();
-
-                    b.ToTable("FacultiesCampuses");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permissions");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.ProgramBatch", b =>
-                {
-                    b.Property<int>("BatchId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BatchId"));
-
-                    b.Property<string>("BatchName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProgramId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("BatchId");
-
-                    b.HasIndex("ProgramId");
-
-                    b.ToTable("ProgramsBatches");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.ProgramBatchSection", b =>
-                {
-                    b.Property<int>("SectionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
-
-                    b.Property<int>("BatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProgramBatchBatchId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SectionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("SectionId");
-
-                    b.HasIndex("ProgramBatchBatchId");
-
-                    b.ToTable("ProgramsBatchSections");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Programs", b =>
-                {
-                    b.Property<int>("ProgramId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProgramId"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreditRequired")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DegreeType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProgramName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ProgramId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("Programs");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.School", b =>
-                {
-                    b.Property<int>("SchoolId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SchoolId"));
-
-                    b.Property<bool>("Academic")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CampusId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SchoolName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("ShortName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("SchoolId");
-
-                    b.HasIndex("CampusId");
-
-                    b.ToTable("schools");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Semester", b =>
-                {
-                    b.Property<int>("SemesterId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SemesterId"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SemesterName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("SemesterId");
-
-                    b.ToTable("Semesters");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.University", b =>
-                {
-                    b.Property<int>("UniversityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniversityId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UniversityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UniversityId");
-
-                    b.ToTable("Universities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -830,15 +832,12 @@ namespace Dynamic_RBAMS.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Faculty", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UserManagement.Models.Faculty", b =>
                 {
-                    b.HasBaseType("Dynamic_RBAMS.Models.ApplicationUser");
+                    b.HasBaseType("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("DepartmentID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Designation")
                         .HasColumnType("nvarchar(max)");
@@ -861,16 +860,14 @@ namespace Dynamic_RBAMS.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasIndex("DepartmentID");
-
                     b.HasIndex("UniversityId");
 
                     b.ToTable("Faculties", (string)null);
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Student", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UserManagement.Models.Student", b =>
                 {
-                    b.HasBaseType("Dynamic_RBAMS.Models.ApplicationUser");
+                    b.HasBaseType("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -896,7 +893,7 @@ namespace Dynamic_RBAMS.Migrations
                     b.ToTable("Students", (string)null);
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.ApplicationRole", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.RoleManagement.ApplicationRole", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
 
@@ -910,7 +907,7 @@ namespace Dynamic_RBAMS.Migrations
                     b.HasDiscriminator().HasValue("ApplicationRole");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.RolePermissionClaim", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.Common.Models.RolePermissionClaim", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>");
 
@@ -922,9 +919,31 @@ namespace Dynamic_RBAMS.Migrations
                     b.HasDiscriminator().HasValue("RolePermissionClaim");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Campus", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.AuthenticationManagment.RefreshToken", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.University", "University")
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.BatchManagment.ProgramBatch", b =>
+                {
+                    b.HasOne("Dynamic_RBAMS.Features.ProgramManagement.Programs", "Program")
+                        .WithMany()
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Program");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.CampusManagement.Campus", b =>
+                {
+                    b.HasOne("Dynamic_RBAMS.Features.UniveristyManagement.University", "University")
                         .WithMany("Campuses")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -933,14 +952,52 @@ namespace Dynamic_RBAMS.Migrations
                     b.Navigation("University");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Course", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.Common.Models.DepartmentFaculty", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.Course", "ConnectedCourse")
+                    b.HasOne("Dynamic_RBAMS.Features.DepartmentManagement.Department", "Department")
+                        .WithMany("DepartmentFaculties")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.Faculty", "Faculty")
+                        .WithMany("DepartmentFaculties")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.Common.Models.FacultyCampus", b =>
+                {
+                    b.HasOne("Dynamic_RBAMS.Features.CampusManagement.Campus", "Campus")
+                        .WithMany("FacultyCampuses")
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.Faculty", "Faculty")
+                        .WithMany("FacultyCampuses")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Campus");
+
+                    b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.CourseManagement.Course", b =>
+                {
+                    b.HasOne("Dynamic_RBAMS.Features.CourseManagement.Course", "ConnectedCourse")
                         .WithOne()
-                        .HasForeignKey("Dynamic_RBAMS.Models.Course", "ConnectedCourseId")
+                        .HasForeignKey("Dynamic_RBAMS.Features.CourseManagement.Course", "ConnectedCourseId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Dynamic_RBAMS.Models.Department", "Department")
+                    b.HasOne("Dynamic_RBAMS.Features.DepartmentManagement.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -951,27 +1008,27 @@ namespace Dynamic_RBAMS.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.CourseSection", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.CourseManagement.CourseSection", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.Course", "Course")
+                    b.HasOne("Dynamic_RBAMS.Features.CourseManagement.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Dynamic_RBAMS.Models.Faculty", "Faculty")
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.Faculty", "Faculty")
                         .WithMany()
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Dynamic_RBAMS.Models.ProgramBatchSection", "ProgramBatchSection")
+                    b.HasOne("Dynamic_RBAMS.Features.SectionManagement.ProgramBatchSection", "ProgramBatchSection")
                         .WithMany()
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Dynamic_RBAMS.Models.Semester", "Semester")
+                    b.HasOne("Dynamic_RBAMS.Features.SemesterManagement.Semester", "Semester")
                         .WithMany()
                         .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -986,9 +1043,9 @@ namespace Dynamic_RBAMS.Migrations
                     b.Navigation("Semester");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Department", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.DepartmentManagement.Department", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.School", "School")
+                    b.HasOne("Dynamic_RBAMS.Features.SchoolManagement.School", "School")
                         .WithMany("Departments")
                         .HasForeignKey("SchoolId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -997,28 +1054,9 @@ namespace Dynamic_RBAMS.Migrations
                     b.Navigation("School");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.DepartmentFaculty", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.EnrollmentManagement.Enrollment", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.Department", "Department")
-                        .WithMany("DepartmentFaculties")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Dynamic_RBAMS.Models.Faculty", "Faculty")
-                        .WithMany("DepartmentFaculties")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Faculty");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Enrollment", b =>
-                {
-                    b.HasOne("Dynamic_RBAMS.Models.CourseSection", "CourseSection")
+                    b.HasOne("Dynamic_RBAMS.Features.CourseManagement.CourseSection", "CourseSection")
                         .WithMany()
                         .HasForeignKey("CourseSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1027,51 +1065,10 @@ namespace Dynamic_RBAMS.Migrations
                     b.Navigation("CourseSection");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.FacultyCampus", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.ProgramManagement.Programs", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.Campus", "Campus")
-                        .WithMany("FacultyCampuses")
-                        .HasForeignKey("CampusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Dynamic_RBAMS.Models.Faculty", "Faculty")
-                        .WithMany("FacultyCampuses")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Campus");
-
-                    b.Navigation("Faculty");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.ProgramBatch", b =>
-                {
-                    b.HasOne("Dynamic_RBAMS.Models.Programs", "Program")
-                        .WithMany()
-                        .HasForeignKey("ProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Program");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.ProgramBatchSection", b =>
-                {
-                    b.HasOne("Dynamic_RBAMS.Models.ProgramBatch", "ProgramBatch")
-                        .WithMany()
-                        .HasForeignKey("ProgramBatchBatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProgramBatch");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Programs", b =>
-                {
-                    b.HasOne("Dynamic_RBAMS.Models.Department", "Department")
-                        .WithMany()
+                    b.HasOne("Dynamic_RBAMS.Features.DepartmentManagement.Department", "Department")
+                        .WithMany("Programs")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1079,26 +1076,26 @@ namespace Dynamic_RBAMS.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.RefreshToken", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.SchoolManagement.School", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Dynamic_RBAMS.Models.School", b =>
-                {
-                    b.HasOne("Dynamic_RBAMS.Models.Campus", "Campus")
+                    b.HasOne("Dynamic_RBAMS.Features.CampusManagement.Campus", "Campus")
                         .WithMany("Schools")
                         .HasForeignKey("CampusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Campus");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.SectionManagement.ProgramBatchSection", b =>
+                {
+                    b.HasOne("Dynamic_RBAMS.Features.BatchManagment.ProgramBatch", "ProgramBatch")
+                        .WithMany()
+                        .HasForeignKey("ProgramBatchBatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProgramBatch");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1112,7 +1109,7 @@ namespace Dynamic_RBAMS.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.ApplicationUser", null)
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1121,7 +1118,7 @@ namespace Dynamic_RBAMS.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.ApplicationUser", null)
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1136,7 +1133,7 @@ namespace Dynamic_RBAMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dynamic_RBAMS.Models.ApplicationUser", null)
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1145,46 +1142,40 @@ namespace Dynamic_RBAMS.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.ApplicationUser", null)
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Faculty", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UserManagement.Models.Faculty", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentID");
-
-                    b.HasOne("Dynamic_RBAMS.Models.ApplicationUser", null)
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", null)
                         .WithOne()
-                        .HasForeignKey("Dynamic_RBAMS.Models.Faculty", "Id")
+                        .HasForeignKey("Dynamic_RBAMS.Features.UserManagement.Models.Faculty", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dynamic_RBAMS.Models.University", "University")
+                    b.HasOne("Dynamic_RBAMS.Features.UniveristyManagement.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId");
-
-                    b.Navigation("Department");
 
                     b.Navigation("University");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Student", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UserManagement.Models.Student", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.ApplicationUser", null)
+                    b.HasOne("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", null)
                         .WithOne()
-                        .HasForeignKey("Dynamic_RBAMS.Models.Student", "Id")
+                        .HasForeignKey("Dynamic_RBAMS.Features.UserManagement.Models.Student", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.RolePermissionClaim", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.Common.Models.RolePermissionClaim", b =>
                 {
-                    b.HasOne("Dynamic_RBAMS.Models.Permission", "Permission")
+                    b.HasOne("Dynamic_RBAMS.Features.PermissionsManagement.Permission", "Permission")
                         .WithMany("RoleClaims")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1193,34 +1184,41 @@ namespace Dynamic_RBAMS.Migrations
                     b.Navigation("Permission");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Campus", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.CampusManagement.Campus", b =>
                 {
                     b.Navigation("FacultyCampuses");
 
                     b.Navigation("Schools");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Department", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.DepartmentManagement.Department", b =>
                 {
                     b.Navigation("DepartmentFaculties");
+
+                    b.Navigation("Programs");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Permission", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.PermissionsManagement.Permission", b =>
                 {
                     b.Navigation("RoleClaims");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.School", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.SchoolManagement.School", b =>
                 {
                     b.Navigation("Departments");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.University", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UniveristyManagement.University", b =>
                 {
                     b.Navigation("Campuses");
                 });
 
-            modelBuilder.Entity("Dynamic_RBAMS.Models.Faculty", b =>
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UserManagement.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Dynamic_RBAMS.Features.UserManagement.Models.Faculty", b =>
                 {
                     b.Navigation("DepartmentFaculties");
 

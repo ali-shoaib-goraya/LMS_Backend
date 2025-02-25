@@ -1,4 +1,4 @@
-﻿using Dynamic_RBAMS.DTOs;
+﻿using Dynamic_RBAMS.Features.Common.Dtos;
 namespace Dynamic_RBAMS.Middlewares
 {
     public class GlobalExceptionMiddleware
