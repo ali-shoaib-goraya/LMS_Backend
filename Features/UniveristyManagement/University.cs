@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using Dynamic_RBAMS.Features.CampusManagement;
-namespace Dynamic_RBAMS.Features.UniveristyManagement
+using LMS.Features.CampusManagement;
+namespace LMS.Features.UniveristyManagement
 {
     public class University
     {

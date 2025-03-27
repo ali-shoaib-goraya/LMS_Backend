@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Dynamic_RBAMS.Features.CampusManagement;
-using Dynamic_RBAMS.Features.DepartmentManagement;
+using LMS.Features.CampusManagement;
+using LMS.Features.DepartmentManagement;
 
-namespace Dynamic_RBAMS.Features.SchoolManagement
+namespace LMS.Features.SchoolManagement
 {
     public class School
     {
@@ -15,7 +15,6 @@ namespace Dynamic_RBAMS.Features.SchoolManagement
         public string ShortName { get; set; }
         public string Address { get; set; }
         public bool Academic { get; set; } = true;
-
         public string City { get; set; }
         public string Notes { get; set; }
         public bool IsDeleted { get; set; }

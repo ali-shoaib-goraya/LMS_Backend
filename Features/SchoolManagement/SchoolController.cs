@@ -1,13 +1,13 @@
-﻿using Dynamic_RBAMS.Features.SchoolManagement.Dtos;
-using Dynamic_RBAMS.Features.SchoolManagement.Services;
+﻿using LMS.Features.SchoolManagement.Dtos;
+using LMS.Features.SchoolManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Dynamic_RBAMS.Features.SchoolManagement
+namespace LMS.Features.SchoolManagement
 {
-    [Authorize]
+    [Authorize] 
     [ApiController] 
     [Route("api/schools")]
     public class SchoolController : ControllerBase

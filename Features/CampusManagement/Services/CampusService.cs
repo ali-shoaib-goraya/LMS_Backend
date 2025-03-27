@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
-using Dynamic_RBAMS.Features.Common.Dtos;
-using Dynamic_RBAMS.Features.CampusManagement.Repositories;
-using Dynamic_RBAMS.Features.CampusManagement.Dtos;
-using Dynamic_RBAMS.Features.Common.Services;
-using Dynamic_RBAMS.Features.UniveristyManagement.Repositories;
+using LMS.Features.Common.Dtos;
+using LMS.Features.CampusManagement.Repositories;
+using LMS.Features.CampusManagement.Dtos;
+using LMS.Features.Common.Services;
+using LMS.Features.UniveristyManagement.Repositories;
 
-namespace Dynamic_RBAMS.Features.CampusManagement.Services
+namespace LMS.Features.CampusManagement.Services
 {
     public class CampusService : ICampusService
     {
@@ -155,3 +155,5 @@ namespace Dynamic_RBAMS.Features.CampusManagement.Services
         }
     }
 }
+
+

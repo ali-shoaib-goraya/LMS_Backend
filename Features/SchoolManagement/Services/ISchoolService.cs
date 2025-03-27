@@ -1,7 +1,7 @@
-﻿using Dynamic_RBAMS.Features.Common.Dtos;
-using Dynamic_RBAMS.Features.SchoolManagement.Dtos;
+﻿using LMS.Features.Common.Dtos;
+using LMS.Features.SchoolManagement.Dtos;
 
-namespace Dynamic_RBAMS.Features.SchoolManagement.Services
+namespace LMS.Features.SchoolManagement.Services
 {
     public interface ISchoolService
     {

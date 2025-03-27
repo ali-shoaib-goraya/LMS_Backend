@@ -2,14 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Dynamic_RBAMS.Features.Common.Dtos;
-using Dynamic_RBAMS.Features.UniveristyManagement.Dtos;
-using Dynamic_RBAMS.Features.UniveristyManagement.Repositories;
-namespace Dynamic_RBAMS.Features.UniveristyManagement.Services
-{
+using LMS.Features.Common.Dtos;
+using LMS.Features.UniveristyManagement.Dtos;
+using LMS.Features.UniveristyManagement.Repositories;
+
+namespace LMS.Features.UniveristyManagement.Services
+{ 
     public class UniversityService : IUniversityService
     {
-        private readonly IUniversityRepository _repository;
+        private readonly IUniversityRepository _repository;  
 
         public UniversityService(IUniversityRepository repository)
         {

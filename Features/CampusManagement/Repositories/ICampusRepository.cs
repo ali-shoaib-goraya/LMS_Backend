@@ -1,6 +1,6 @@
-﻿using Dynamic_RBAMS.Features.CampusManagement.Dtos;
+﻿using LMS.Features.CampusManagement.Dtos;
 
-namespace Dynamic_RBAMS.Features.CampusManagement.Repositories
+namespace LMS.Features.CampusManagement.Repositories
 {
     public interface ICampusRepository
     {

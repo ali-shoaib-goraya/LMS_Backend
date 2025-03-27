@@ -1,13 +1,14 @@
-﻿using Dynamic_RBAMS.Data;
+﻿using LMS.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
-using Dynamic_RBAMS.Features.RoleManagement;
+using LMS.Features.RoleManagement;
+using Features.PermissionsManagement.Dtos;
 
 
-namespace Dynamic_RBAMS.Features.PermissionsManagement
+namespace LMS.Features.PermissionsManagement
 {
 
     [ApiController]

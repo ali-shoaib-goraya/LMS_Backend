@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using Dynamic_RBAMS.Features.CampusManagement.Repositories;
-using Dynamic_RBAMS.Features.Common.Services;
-using Dynamic_RBAMS.Features.DepartmentManagement.Dtos;
-using Dynamic_RBAMS.Features.DepartmentManagement.Repositories;
-using Dynamic_RBAMS.Features.SchoolManagement;
-using Dynamic_RBAMS.Features.SchoolManagement.Repositories;
+using LMS.Features.CampusManagement.Repositories;
+using LMS.Features.Common.Services;
+using LMS.Features.DepartmentManagement.Dtos;
+using LMS.Features.DepartmentManagement.Repositories;
+using LMS.Features.SchoolManagement;
+using LMS.Features.SchoolManagement.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
+namespace LMS.Features.DepartmentManagement.Services
 {
     public class DepartmentService : IDepartmentService
     {
@@ -16,11 +16,11 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
         private readonly ISchoolRepository _schoolRepository;
         private readonly ICampusRepository _campusRepository;
         private readonly IMapper _mapper;
-        private readonly ICampusEntityAuthorizationService _campusAuthorizationService; // ✅ Injected
+        private readonly ICampusEntityAuthorizationService _campusAuthorizationService;
 
         public DepartmentService(IDepartmentRepository departmentRepository, ISchoolRepository schoolRepository,
             IMapper mapper, ICampusRepository campusRepository,
-            ICampusEntityAuthorizationService campusAuthorizationService) // ✅ Injected
+            ICampusEntityAuthorizationService campusAuthorizationService)
         {
             _departmentRepository = departmentRepository;
             _schoolRepository = schoolRepository;
@@ -32,7 +32,7 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
         public async Task<IEnumerable<DepartmentResponseDto>?> GetDepartmentsByCampusAsync(int campusId)
         {
             var campus = await _campusRepository.GetByIdAsync(campusId);
-            if (campus == null) return null; // Indicate campus does not exist
+            if (campus == null) return null;
 
             var departments = await _departmentRepository.GetDepartmentsByCampusAsync(campusId);
             return _mapper.Map<IEnumerable<DepartmentResponseDto>>(departments);
@@ -49,7 +49,6 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
             var department = await _departmentRepository.GetDepartmentByIdAsync(departmentId);
             if (department == null) return null;
 
-            // 🔒 Authorization: Ensure user has access to the department's campus
             bool hasAccess = await _campusAuthorizationService.HasAccessToEntityAsync<Department>(departmentId);
             if (!hasAccess)
                 throw new UnauthorizedAccessException("You do not have permission to access this department");
@@ -62,10 +61,14 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
             var school = await _schoolRepository.GetByIdAsync(dto.SchoolId);
             if (school == null) throw new KeyNotFoundException("School not found");
 
-            // 🔒 Authorization: Ensure user has access to the school's campus before creating a department
             bool hasAccess = await _campusAuthorizationService.HasAccessToEntityAsync<School>(dto.SchoolId);
             if (!hasAccess)
                 throw new UnauthorizedAccessException("You do not have permission to create a department in this school");
+
+            // 🔒 Ensure department name is unique within the campus
+            bool nameExists = await _departmentRepository.IsDepartmentNameExistsAsync(school.CampusId, dto.DepartmentName);
+            if (nameExists)
+                throw new Exception("A department with this name already exists within the campus");
 
             var department = _mapper.Map<Department>(dto);
             department.CreatedAt = DateTime.UtcNow;
@@ -79,10 +82,14 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
             var existingDepartment = await _departmentRepository.GetDepartmentByIdAsync(departmentId);
             if (existingDepartment == null) return null;
 
-            // 🔒 Authorization: Ensure user has access to update this department
             bool hasAccess = await _campusAuthorizationService.HasAccessToEntityAsync<Department>(departmentId);
             if (!hasAccess)
                 throw new UnauthorizedAccessException("You do not have permission to update this department");
+
+            // 🔒 Ensure updated department name is unique within the campus
+            bool nameExists = await _departmentRepository.IsDepartmentNameExistsAsync(existingDepartment.School.CampusId, dto.DepartmentName, departmentId);
+            if (nameExists)
+                throw new Exception("A department with this name already exists within the campus");
 
             _mapper.Map(dto, existingDepartment);
             existingDepartment.UpdatedAt = DateTime.UtcNow;
@@ -93,7 +100,6 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
 
         public async Task<bool> SoftDeleteDepartmentAsync(int departmentId)
         {
-            // 🔒 Authorization: Ensure user has access before soft deleting
             bool hasAccess = await _campusAuthorizationService.HasAccessToEntityAsync<Department>(departmentId);
             if (!hasAccess)
                 throw new UnauthorizedAccessException("You do not have permission to delete this department");
@@ -103,7 +109,6 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
 
         public async Task<bool> DeleteDepartmentAsync(int departmentId)
         {
-            // 🔒 Authorization: Ensure user has access before hard deleting
             bool hasAccess = await _campusAuthorizationService.HasAccessToEntityAsync<Department>(departmentId);
             if (!hasAccess)
                 throw new UnauthorizedAccessException("You do not have permission to delete this department");

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.DepartmentManagement.Dtos
+namespace LMS.Features.DepartmentManagement.Dtos
 {
     public class CreateDepartmentDto
     {

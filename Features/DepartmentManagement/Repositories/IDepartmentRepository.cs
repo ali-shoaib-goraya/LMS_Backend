@@ -1,5 +1,5 @@
-﻿namespace Dynamic_RBAMS.Features.DepartmentManagement.Repositories
-{
+﻿namespace LMS.Features.DepartmentManagement.Repositories
+{ 
     public interface IDepartmentRepository
     {
         Task<IEnumerable<Department>> GetDepartmentsByCampusAsync(int campusId);
@@ -9,5 +9,6 @@
         Task<Department?> UpdateDepartmentAsync(Department department); 
         Task<bool> DeleteDepartmentAsync(int departmentId);
         Task<bool> SoftDeleteDepartmentAsync(int departmentId);
+        Task<bool> IsDepartmentNameExistsAsync(int campusId, string departmentName, int? excludingDepartmentId = null); // ✅ Added
     }
 }

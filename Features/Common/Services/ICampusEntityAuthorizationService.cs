@@ -1,4 +1,4 @@
-﻿namespace Dynamic_RBAMS.Features.Common.Services
+﻿namespace LMS.Features.Common.Services
 {
     public interface ICampusEntityAuthorizationService
     {

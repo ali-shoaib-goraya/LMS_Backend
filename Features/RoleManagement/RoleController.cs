@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Dynamic_RBAMS.Data;
-using Dynamic_RBAMS.Features.Common.Models;
-namespace Dynamic_RBAMS.Features.RoleManagement
+using LMS.Data;
+using LMS.Features.Common.Models;
+namespace LMS.Features.RoleManagement
 {
 
-
+     
     [ApiController]
     [Route("api/[controller]")]
     public class RoleController : ControllerBase

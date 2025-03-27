@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Dynamic_RBAMS.Features.DepartmentManagement;
-using Dynamic_RBAMS.Features.UniveristyManagement;
-using Dynamic_RBAMS.Features.CampusManagement;
-using Dynamic_RBAMS.Features.Common.Models;
+using LMS.Features.DepartmentManagement;
+using LMS.Features.UniveristyManagement;
+using LMS.Features.CampusManagement;
+using LMS.Features.Common.Models;
 
-namespace Dynamic_RBAMS.Features.UserManagement.Models
+namespace LMS.Features.UserManagement.Models 
 {
     public class Faculty : ApplicationUser
     {

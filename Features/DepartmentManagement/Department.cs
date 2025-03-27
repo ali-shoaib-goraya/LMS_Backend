@@ -1,9 +1,9 @@
-﻿using Dynamic_RBAMS.Features.Common.Models;
-using Dynamic_RBAMS.Features.SchoolManagement;
-using Dynamic_RBAMS.Features.ProgramManagement;
+﻿using LMS.Features.Common.Models;
+using LMS.Features.SchoolManagement;
+using LMS.Features.ProgramManagement;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.DepartmentManagement
+namespace LMS.Features.DepartmentManagement
 {
     public class Department
     {

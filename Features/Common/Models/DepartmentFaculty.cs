@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Dynamic_RBAMS.Features.DepartmentManagement;
-using Dynamic_RBAMS.Features.UserManagement.Models;
+using LMS.Features.DepartmentManagement;
+using LMS.Features.UserManagement.Models;
 
-namespace Dynamic_RBAMS.Features.Common.Models
+namespace LMS.Features.Common.Models
 {
     public class DepartmentFaculty
     {
@@ -10,7 +10,7 @@ namespace Dynamic_RBAMS.Features.Common.Models
         public string FacultyId { get; set; }
         public Faculty Faculty { get; set; }
 
-        public int DepartmentId { get; set; }
+        public int DepartmentId { get; set; } 
         public Department Department { get; set; }
     }
 }

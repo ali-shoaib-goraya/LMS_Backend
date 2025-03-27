@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.ProgramManagement.Dtos
+namespace LMS.Features.ProgramManagement.Dtos
 {
     public class CreateProgramDto
     {
         [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
-
+        public string ProgramName { get; set; }
+         
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Code is required.")]

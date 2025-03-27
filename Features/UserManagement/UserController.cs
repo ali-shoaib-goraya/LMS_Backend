@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Dynamic_RBAMS.Features.Common.Dtos;
-using Dynamic_RBAMS.Features.UserManagement.Services;
-using Dynamic_RBAMS.Features.UserManagement.Dtos;
-using Dynamic_RBAMS.Features.Common.Services;
+using LMS.Features.Common.Dtos;
+using LMS.Features.UserManagement.Services;
+using LMS.Features.UserManagement.Dtos;
+using LMS.Features.Common.Services;
 
-namespace Dynamic_RBAMS.Features.UserManagement
+namespace LMS.Features.UserManagement
 {
     [Route("api/users")]
     [ApiController]
@@ -67,9 +67,9 @@ namespace Dynamic_RBAMS.Features.UserManagement
             return StatusCode(response.StatusCode, response);
         }
 
-        [HttpGet("mine")]
+        [HttpGet("faculty-mine")]
         //[Authorize(Roles = "CampusAdmin")]  //Restrict to Campus Admins
-        public async Task<IActionResult> GetAllUsersForCampus()
+        public async Task<IActionResult> GetAllFacultyForCampus()
         {
             try
             {
@@ -80,8 +80,8 @@ namespace Dynamic_RBAMS.Features.UserManagement
                     return Unauthorized(new ApiResponseDto(401, "Unauthorized access: No campus assigned"));
                 }
 
-                // Fetch users for the campus
-                var users = await _userService.GetAllUsersForCampusAsync(campusId.Value);
+                // Fetch users for the campus 
+                var users = await _userService.GetAllFacultyForCampusAsync(campusId.Value);
 
                 return Ok(new ApiResponseDto(200, "Users fetched successfully", users));
             }
@@ -99,6 +99,16 @@ namespace Dynamic_RBAMS.Features.UserManagement
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpGet("{userId}")]
+        public IActionResult GetUser(string userId)
+        {
+            var user = _userService.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new ApiResponseDto(404, "User not found"));
+            }
+            return Ok(new ApiResponseDto(200, "User fetched successfully", user));
 
+        }
     }
 }

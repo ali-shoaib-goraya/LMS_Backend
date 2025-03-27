@@ -1,4 +1,4 @@
-﻿namespace Dynamic_RBAMS.Features.Common.Dtos
+﻿namespace LMS.Features.Common.Dtos
 {
     public class ErrorResponseDto
     {

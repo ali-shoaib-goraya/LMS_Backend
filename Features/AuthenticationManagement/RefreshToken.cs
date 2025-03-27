@@ -1,6 +1,6 @@
-﻿using Dynamic_RBAMS.Features.UserManagement.Models;
+﻿using LMS.Features.UserManagement.Models;
 
-namespace Dynamic_RBAMS.Features.AuthenticationManagment
+namespace LMS.Features.AuthenticationManagment
 {
     public class RefreshToken
     {

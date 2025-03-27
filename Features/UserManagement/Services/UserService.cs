@@ -2,18 +2,18 @@
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
-using Dynamic_RBAMS.Features.Common.Models;
-using Dynamic_RBAMS.Features.RoleManagement;
-using Dynamic_RBAMS.Features.UserManagement;
-using Dynamic_RBAMS.Features.Common.Dtos;
-using Dynamic_RBAMS.Features.UserManagement.Services;
-using Dynamic_RBAMS.Features.UserManagement.Dtos;
-using Dynamic_RBAMS.Features.UserManagement.Models;
+using LMS.Features.Common.Models;
+using LMS.Features.RoleManagement;
+using LMS.Features.UserManagement;
+using LMS.Features.Common.Dtos;
+using LMS.Features.UserManagement.Services;
+using LMS.Features.UserManagement.Dtos;
+using LMS.Features.UserManagement.Models;
 using Microsoft.EntityFrameworkCore;
-using Dynamic_RBAMS.Data;
-using Dynamic_RBAMS.Features.CampusManagement.Repositories;
-using Dynamic_RBAMS.Features.UniveristyManagement.Repositories;
-using Dynamic_RBAMS.Features.Common.Services;
+using LMS.Data;
+using LMS.Features.CampusManagement.Repositories;
+using LMS.Features.UniveristyManagement.Repositories;
+using LMS.Features.Common.Services;
 
 public class UserService : IUserService
 {   private readonly ICampusRepository _campusRepository;
@@ -231,11 +231,11 @@ public class UserService : IUserService
         return new ApiResponseDto(200, "Campus Admin registered successfully", registerResponse);
     }
 
-    public async Task<List<UsersResponseDto>> GetAllUsersForCampusAsync(int campusId)
+    public async Task<List<UsersResponseDto>> GetAllFacultyForCampusAsync(int campusId)
     {
         var users = await _context.DepartmentFaculties
             .Where(df => _context.Departments
-                .Where(d => _context.Schools
+                .Where(d => _context.Schools 
                     .Where(s => s.CampusId == campusId)
                     .SelectMany(s => s.Departments)
                     .Select(d => d.DepartmentId)
@@ -351,4 +351,43 @@ public class UserService : IUserService
         return new ApiResponseDto(200, "User deleted successfully");
     }
 
+    public async Task<UsersResponseDto?> GetUserByIdAsync(string  userId)
+    {
+        var user = await _context.Faculties
+            .Include(f => f.FacultyCampuses)
+            .Include(f => f.DepartmentFaculties)
+            .FirstOrDefaultAsync(f => f.Id == userId);
+        if (user == null)
+        {
+            return null;
+        }
+        var userResponse = new UsersResponseDto
+        {
+            Id = user.Id,
+            Email = user.Email ?? "No Email", // Null-safe
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            // Fetch Roles by joining UserRoles and Roles
+            Roles = _context.UserRoles
+                .Where(ur => ur.UserId == user.Id)
+                .Join(_context.Roles,
+                      ur => ur.RoleId,
+                      r => r.Id,
+                      (ur, r) => r.Name ?? "Unknown Role") // Null-safe
+                .ToList(),
+            // Fetch Departments via Faculty-Department bridge table
+            Departments = _context.DepartmentFaculties
+                .Where(df => df.FacultyId == user.Id)
+                .Select(df => df.Department.DepartmentName)
+                .ToList(),
+            Type = user.Type,
+            Designation = user.Designation,
+            EmploymentType = user.EmploymentType,
+            EmploymentStatus = user.EmploymentStatus,
+            Qualification = user.Qualification,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt
+        };
+        return userResponse;
+    }
 }

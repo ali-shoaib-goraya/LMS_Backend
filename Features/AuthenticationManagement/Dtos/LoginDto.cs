@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
-public class LoginDto
+namespace LMS.Features.AuthenticationManagement.Dtos
 {
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
-
-    [Required]
-    public string Password { get; set; }
-
-    [Required]
-    public string Type { get; set; }
-} 
+    public class LoginDto
+    {
+        [Required] 
+        [EmailAddress]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
+        [Required]
+        public string Type { get; set; }
+    }
+}

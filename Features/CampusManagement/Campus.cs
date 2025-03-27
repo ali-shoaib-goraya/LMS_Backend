@@ -1,10 +1,10 @@
-﻿using Dynamic_RBAMS.Features.Common.Models;
-using Dynamic_RBAMS.Features.UniveristyManagement;
-using Dynamic_RBAMS.Features.SchoolManagement;
+﻿using LMS.Features.Common.Models;
+using LMS.Features.UniveristyManagement;
+using LMS.Features.SchoolManagement;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Dynamic_RBAMS.Features.CampusManagement
+namespace LMS.Features.CampusManagement
 {
     public class Campus
     {

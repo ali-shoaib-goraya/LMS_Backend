@@ -1,13 +1,13 @@
-﻿using Dynamic_RBAMS.Features.Common.Dtos;
+﻿using LMS.Features.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Dynamic_RBAMS.Features.DepartmentManagement.Dtos;
-using Dynamic_RBAMS.Features.DepartmentManagement.Services;
+using LMS.Features.DepartmentManagement.Dtos;
+using LMS.Features.DepartmentManagement.Services;
 using Microsoft.AspNetCore.Authorization;
-using Dynamic_RBAMS.Features.Common.Services;
+using LMS.Features.Common.Services;
 
-namespace Dynamic_RBAMS.Features.DepartmentManagement
+namespace LMS.Features.DepartmentManagement
 {
     [Authorize]  //Ensures all endpoints require authentication
     [Route("api/departments")]

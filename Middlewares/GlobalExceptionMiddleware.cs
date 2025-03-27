@@ -1,6 +1,6 @@
-﻿using Dynamic_RBAMS.Features.Common.Dtos;
-namespace Dynamic_RBAMS.Middlewares
-{
+﻿using LMS.Features.Common.Dtos;
+namespace LMS.Middlewares
+{ 
     public class GlobalExceptionMiddleware
     {
         private readonly RequestDelegate _next;

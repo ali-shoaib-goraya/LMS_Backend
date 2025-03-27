@@ -1,6 +1,6 @@
-﻿using Dynamic_RBAMS.Features.PermissionsManagement;
+﻿using LMS.Features.PermissionsManagement;
 
-namespace Dynamic_RBAMS.Data
+namespace LMS.Data
 {
     public static class PredefinedPermissions
     {

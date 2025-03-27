@@ -1,29 +1,55 @@
-﻿using Dynamic_RBAMS;
-using Dynamic_RBAMS.Data;
-using Dynamic_RBAMS.Middlewares;
+﻿using LMS.Data;
+using LMS.Data.Seeders;
+using LMS.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Dynamic_RBAMS.AutoMapper;
+using LMS.AutoMapper;
 using System.Text;
-using Dynamic_RBAMS.Features.RoleManagement;
-using Dynamic_RBAMS.Features.Common.Services;
-using Dynamic_RBAMS.Features.DepartmentManagement.Repositories;
-using Dynamic_RBAMS.Features.DepartmentManagement.Services;
-using Dynamic_RBAMS.Features.Common.Repositories;
-using Dynamic_RBAMS.Features.UserManagement.Services;
-using Dynamic_RBAMS.Features.UserManagement.Models;
-using Dynamic_RBAMS.Features.AuthenticationManagement.Services;
-using Dynamic_RBAMS.Features.SchoolManagement.Repositories;
-using Dynamic_RBAMS.Features.SchoolManagement.Services;
-using Dynamic_RBAMS.Features.CampusManagement.Repositories;
-using Dynamic_RBAMS.Features.CampusManagement.Services;
-using Dynamic_RBAMS.Features.UniveristyManagement.Repositories;
-using Dynamic_RBAMS.Features.UniveristyManagement.Services;
+using LMS.Features.RoleManagement;
+using LMS.Features.Common.Services;
+using LMS.Features.DepartmentManagement.Repositories;
+using LMS.Features.DepartmentManagement.Services;
+using LMS.Features.Common.Repositories;
+using LMS.Features.UserManagement.Services;
+using LMS.Features.UserManagement.Models;
+using LMS.Features.AuthenticationManagement.Services;
+using LMS.Features.SchoolManagement.Repositories;
+using LMS.Features.SchoolManagement.Services;
+using LMS.Features.CampusManagement.Repositories;
+using LMS.Features.CampusManagement.Services;
+using LMS.Features.UniveristyManagement.Repositories;
+using LMS.Features.UniveristyManagement.Services;
+using LMS.Features.ProgramManagement.Services;
+using LMS.Features.ProgramManagement.Repositories;
+using LMS.Features.BatchManagement.Services;
+using LMS.Features.BatchManagement.Repositories;
+using LMS.Features.CourseManagement.Repositories;
+using LMS.Features.CourseManagement.Services;
+using LMS.Features.SectionManagement.Repositories;
+using LMS.Features.SectionManagement.Services;
+using LMS.Features.StudentManagement.Services;
+using LMS.Features.SemesterManagement.Repositories;
+using LMS.Features.SemesterManagement.Services;
+using LMS.Features.CourseSectionManagement.Repositories;
+using LMS.Features.CourseSectionManagement.Services;
+using Serilog;
+using LMS.Features.EnrollmentManagement.Services;
+using LMS.Features.AttendanceManagement.Services;
+using LMS.Features.ActivityManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 1️⃣ Add Serilog Configuration from appsettings.json
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+// 2️⃣ Replace default logging with Serilog
+builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -94,6 +120,23 @@ builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IProgramRepository, ProgramRepository>();
+builder.Services.AddScoped<IProgramService, ProgramService>();
+builder.Services.AddScoped<IBatchRepository, BatchRepository>();
+builder.Services.AddScoped<IBatchService, BatchService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ISectionService, SectionService>();
+builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ISemesterRepository, SemesterRepository>();
+builder.Services.AddScoped<ISemesterService, SemesterService>();
+builder.Services.AddScoped<ICourseSectionRepository, CourseSectionRepository>();
+builder.Services.AddScoped<ICourseSectionService, CourseSectionService>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddScoped<ActivityService, ActivityService>();
+
 
 // Register Authorization.
 builder.Services.AddAuthorization();
@@ -171,5 +214,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
+// 3️⃣ Ensure logs are flushed when the app shuts down
+app.Lifetime.ApplicationStopped.Register(() => Log.CloseAndFlush());
 app.Run();

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.AuthenticationManagement.Dtos
+namespace LMS.Features.AuthenticationManagement.Dtos
 {
     public class RefreshTokenDto
     {

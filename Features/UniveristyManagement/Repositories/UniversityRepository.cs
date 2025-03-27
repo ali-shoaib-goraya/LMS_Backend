@@ -1,11 +1,11 @@
-﻿using Dynamic_RBAMS.Data;
-using Dynamic_RBAMS.Features.Common.Models;
+﻿using LMS.Data;
+using LMS.Features.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dynamic_RBAMS.Features.UniveristyManagement.Repositories
+namespace LMS.Features.UniveristyManagement.Repositories
 {
     public class UniversityRepository : IUniversityRepository
     {

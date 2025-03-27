@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.UniveristyManagement.Dtos
+namespace LMS.Features.UniveristyManagement.Dtos
 {
-    public class CreateUniversityDto
+    public class CreateUniversityDto 
     {
         [Required(ErrorMessage = "University Name is required.")]
         [StringLength(100, ErrorMessage = "University Name can't exceed 100 characters.")]

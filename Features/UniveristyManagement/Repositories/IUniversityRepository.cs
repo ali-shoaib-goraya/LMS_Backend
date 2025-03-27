@@ -1,8 +1,8 @@
-﻿using Dynamic_RBAMS.Features.Common.Models;
+﻿using LMS.Features.Common.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Dynamic_RBAMS.Features.UniveristyManagement.Repositories
+namespace LMS.Features.UniveristyManagement.Repositories
 {
     public interface IUniversityRepository
     {

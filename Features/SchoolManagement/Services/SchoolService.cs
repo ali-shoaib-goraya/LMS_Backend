@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dynamic_RBAMS.Features.CampusManagement;
-using Dynamic_RBAMS.Features.CampusManagement.Repositories;
-using Dynamic_RBAMS.Features.Common.Dtos;
-using Dynamic_RBAMS.Features.Common.Services;
-using Dynamic_RBAMS.Features.SchoolManagement.Dtos;
-using Dynamic_RBAMS.Features.SchoolManagement.Repositories;
+using LMS.Features.CampusManagement;
+using LMS.Features.CampusManagement.Repositories;
+using LMS.Features.Common.Dtos;
+using LMS.Features.Common.Services;
+using LMS.Features.SchoolManagement.Dtos;
+using LMS.Features.SchoolManagement.Repositories;
 
-namespace Dynamic_RBAMS.Features.SchoolManagement.Services
+namespace LMS.Features.SchoolManagement.Services
 {
     public class SchoolService : ISchoolService
     {

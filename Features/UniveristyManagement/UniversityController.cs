@@ -1,11 +1,11 @@
 ﻿// UniversityController.cs
-using Dynamic_RBAMS.Features.UniveristyManagement.Dtos;
-using Dynamic_RBAMS.Features.UniveristyManagement.Services;
+using LMS.Features.UniveristyManagement.Dtos;
+using LMS.Features.UniveristyManagement.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc; 
 
 
-namespace Dynamic_RBAMS.Features.UniveristyManagement
+namespace LMS.Features.UniveristyManagement
 {
     //[Authorize]
     [ApiController]

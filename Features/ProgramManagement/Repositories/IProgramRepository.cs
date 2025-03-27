@@ -1,6 +1,6 @@
-﻿using Dynamic_RBAMS.Features.DepartmentManagement;
-using Dynamic_RBAMS.Features.ProgramManagement.Dtos;
-namespace Dynamic_RBAMS.Features.ProgramManagement.Repositories
+﻿using LMS.Features.DepartmentManagement;
+using LMS.Features.ProgramManagement.Dtos;
+namespace LMS.Features.ProgramManagement.Repositories
 {
     public interface IProgramRepository
     {
@@ -10,6 +10,7 @@ namespace Dynamic_RBAMS.Features.ProgramManagement.Repositories
         Task<Programs?> UpdateProgramAsync(Programs program);  
         Task<bool> DeleteProgramAsync(int programId); 
         Task<bool> SoftDeleteProgramAsync(int programId);
+        Task<bool> IsProgramNameExistsAsync(int campusId, string programName, int? excludingProgramId = null);
     }
 } 
  

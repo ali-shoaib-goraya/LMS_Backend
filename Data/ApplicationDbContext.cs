@@ -1,24 +1,28 @@
-﻿using Dynamic_RBAMS.Features.AuthenticationManagment;
-using Dynamic_RBAMS.Features.BatchManagment;
-using Dynamic_RBAMS.Features.CampusManagement;
-using Dynamic_RBAMS.Features.Common.Models;
-using Dynamic_RBAMS.Features.CourseManagement;
-using Dynamic_RBAMS.Features.DepartmentManagement;
-using Dynamic_RBAMS.Features.EnrollmentManagement;
-using Dynamic_RBAMS.Features.PermissionsManagement;
-using Dynamic_RBAMS.Features.ProgramManagement;
-using Dynamic_RBAMS.Features.RoleManagement;
-using Dynamic_RBAMS.Features.SchoolManagement;
-using Dynamic_RBAMS.Features.SectionManagement;
-using Dynamic_RBAMS.Features.SemesterManagement;
-using Dynamic_RBAMS.Features.UniveristyManagement;
-using Dynamic_RBAMS.Features.UserManagement.Models;
+﻿using LMS.Features.AuthenticationManagment;
+using LMS.Features.BatchManagement;
+using LMS.Features.CampusManagement;
+using LMS.Features.Common.Models;
+using LMS.Features.CourseManagement;
+using LMS.Features.CourseSectionManagement.Models;
+using LMS.Features.DepartmentManagement;
+using LMS.Features.EnrollmentManagement;
+using LMS.Features.PermissionsManagement;
+using LMS.Features.ProgramManagement;
+using LMS.Features.RoleManagement;
+using LMS.Features.SchoolManagement;
+using LMS.Features.SectionManagement;
+using LMS.Features.SemesterManagement;
+using LMS.Features.StudentManagement.Models;
+using LMS.Features.AttendanceManagement.Models;
+using LMS.Features.UniveristyManagement;
+using LMS.Features.UserManagement.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
+using LMS.Features.ActivityManagement.Models;
 
-namespace Dynamic_RBAMS.Data
+namespace LMS.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, String>
     {
@@ -37,11 +41,24 @@ namespace Dynamic_RBAMS.Data
         public DbSet<FacultyCampus> FacultiesCampuses { get; set; } 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Programs> Programs { get; set; }  
-        public DbSet<ProgramBatch> ProgramsBatches { get; set; } 
-        public DbSet<ProgramBatchSection> ProgramsBatchSections { get; set; }
+        public DbSet<ProgramBatch> ProgramBatches { get; set; }  
+        public DbSet<ProgramBatchSection> ProgramBatchSections { get; set; }
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<CourseSection> CourseSections { get; set; }
-        public DbSet<Enrollment> Enrollments { get; set; } 
+        public DbSet<Enrollment> Enrollments { get; set; }
+
+        // Attendance Module 
+        public DbSet<ClassSession> ClassSessions { get; set; }
+        public DbSet<AttendanceRecord> AttendanceRecords { get; set; }
+
+        // Activity Module
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<StudentActivity> StudentActivities { get; set; }
+        public DbSet<MCQChoice> MCQChoices { get; set; }
+        public DbSet<SubActivity> SubActivities { get; set; }
+        public DbSet<StudentSubActivity> StudentSubActivities { get; set; }
+        public DbSet<StudentGrade> StudentGrades { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         // Override OnModelCreating to define relationships
@@ -101,18 +118,17 @@ namespace Dynamic_RBAMS.Data
     // ✅ Course Relationships (Restrict deletions)
     builder.Entity<Course>()
         .HasOne(c => c.ConnectedCourse)
-        .WithOne()
+        .WithOne() 
         .HasForeignKey<Course>(c => c.ConnectedCourseId)
         .OnDelete(DeleteBehavior.Restrict);
 
-    // ✅ CourseSection Constraints
+    // ✅ CourseSection
+    
     builder.Entity<CourseSection>()
-        .HasOne(cs => cs.ProgramBatchSection)
-        .WithMany()
-        .HasForeignKey(cs => cs.SectionId)
-        .OnDelete(DeleteBehavior.Restrict);
+        .HasIndex(cs => new { cs.FacultyId, cs.SchoolId, cs.SemesterId, cs.CourseId, cs.Section, cs.CourseSectionName })
+        .IsUnique();
 
-    builder.Entity<CourseSection>()
+    builder.Entity<CourseSection>() 
         .HasOne(cs => cs.Course)
         .WithMany()
         .HasForeignKey(cs => cs.CourseId)
@@ -130,8 +146,41 @@ namespace Dynamic_RBAMS.Data
         .HasForeignKey(cs => cs.SemesterId)
         .OnDelete(DeleteBehavior.Restrict);
 
-    // ✅ University → Campus (Restrict deletion if campuses exist)
-    builder.Entity<Campus>()
+
+    builder.Entity<Enrollment>()
+        .HasIndex(e => new { e.StudentId, e.CourseSectionId })
+        .IsUnique();
+    builder.Entity<Enrollment>()
+        .HasOne(e => e.Student)
+        .WithMany(s => s.Enrollments)
+        .HasForeignKey(e => e.StudentId)
+        .OnDelete(DeleteBehavior.Cascade);
+    builder.Entity<Enrollment>()
+        .HasOne(e => e.CourseSection)
+        .WithMany(cs => cs.Enrollments)
+        .HasForeignKey(e => e.CourseSectionId)
+        .OnDelete(DeleteBehavior.Cascade);
+    
+       
+    builder.Entity<AttendanceRecord>()
+        .HasIndex(ar => new { ar.StudentId, ar.ClassSessionId })
+        .IsUnique();
+    builder.Entity<AttendanceRecord>()
+        .HasOne(ar => ar.Student)
+        .WithMany(s => s.AttendanceRecords)
+        .HasForeignKey(ar => ar.StudentId)
+        .OnDelete(DeleteBehavior.Cascade);
+    builder.Entity<AttendanceRecord>()
+        .HasOne(ar => ar.ClassSession)
+        .WithMany(cs => cs.AttendanceRecords)
+        .HasForeignKey(ar => ar.ClassSessionId)
+        .OnDelete(DeleteBehavior.Cascade);
+      
+
+
+
+            // ✅ University → Campus (Restrict deletion if campuses exist)
+            builder.Entity<Campus>()
         .HasOne(c => c.University)
         .WithMany(u => u.Campuses)
         .HasForeignKey(c => c.UniversityId)
@@ -157,7 +206,9 @@ namespace Dynamic_RBAMS.Data
         .WithMany(d => d.Programs)
         .HasForeignKey(p => p.DepartmentId)
         .OnDelete(DeleteBehavior.Cascade);
+
         }
+    
     }
 }
     

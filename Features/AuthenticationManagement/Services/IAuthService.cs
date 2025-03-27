@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
-using Dynamic_RBAMS.Features.AuthenticationManagement.Dtos;
-using Dynamic_RBAMS.Features.UserManagement.Models;
+using LMS.Features.AuthenticationManagement.Dtos; 
+using LMS.Features.UserManagement.Models;
 
-namespace Dynamic_RBAMS.Features.AuthenticationManagement.Services
+namespace LMS.Features.AuthenticationManagement.Services
 {
     public interface IAuthService
     {

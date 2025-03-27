@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Dynamic_RBAMS.Features.UserManagement.Dtos
-{
+namespace LMS.Features.UserManagement.Dtos
+{ 
     public class RegisterCampusAdminDto : RegisterBaseDto
     {
         [Required]

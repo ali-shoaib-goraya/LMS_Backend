@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Dynamic_RBAMS.Features.RoleManagement
+namespace LMS.Features.RoleManagement
 {
     public class ApplicationRole : IdentityRole
     {

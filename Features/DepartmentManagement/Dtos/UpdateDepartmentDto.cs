@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.DepartmentManagement.Dtos
+namespace LMS.Features.DepartmentManagement.Dtos
 {
     public class UpdateDepartmentDto
-    {
+    { 
         [Required]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Department name must be between 2 and 100 characters.")]
         public string DepartmentName { get; set; }

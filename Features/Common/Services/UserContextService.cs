@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Dynamic_RBAMS.Features.Common.Services
+namespace LMS.Features.Common.Services
 {
     public interface IUserContextService
     {
         int? GetCampusId(); // Returns nullable int
-        int? GetUserId();
+        string? GetUserId();
         int? GetUniversityId();
     }
 
@@ -35,13 +36,12 @@ namespace Dynamic_RBAMS.Features.Common.Services
         /// <summary>
         /// Retrieves the UserId from the logged-in user's claims.
         /// </summary>
-        public int? GetUserId()
+        public string? GetUserId()
         {
-            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (int.TryParse(userIdClaim, out int userId))
-                return userId;
-            return null;
-        }
+            var user = _httpContextAccessor.HttpContext?.User;
+            return user?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                   ?? user?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        } 
 
         public int? GetUniversityId()
         {

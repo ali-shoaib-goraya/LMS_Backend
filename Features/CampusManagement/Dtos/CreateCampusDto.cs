@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.CampusManagement.Dtos
+namespace LMS.Features.CampusManagement.Dtos
 {
     public class CreateCampusDto
     {

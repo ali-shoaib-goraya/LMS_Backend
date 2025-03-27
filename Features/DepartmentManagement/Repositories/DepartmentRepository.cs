@@ -1,9 +1,9 @@
-﻿using Dynamic_RBAMS.Data;
+﻿using LMS.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Dynamic_RBAMS.Features.DepartmentManagement.Repositories
+namespace LMS.Features.DepartmentManagement.Repositories
 {
     public class DepartmentRepository : IDepartmentRepository
     {
@@ -34,12 +34,31 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Repositories
         {
             return await _context.Departments
                 .Include(d => d.School)
-                .Where(d =>  !d.IsDeleted && d.DepartmentId == departmentId)
+                .Where(d => !d.IsDeleted && d.DepartmentId == departmentId)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> IsDepartmentNameExistsAsync(int campusId, string departmentName, int? excludingDepartmentId = null)
+        {
+            return await _context.Departments
+                .Include(d => d.School) // Needed to check CampusId
+                .AnyAsync(d => d.School.CampusId == campusId &&
+                               d.DepartmentName.ToLower() == departmentName.ToLower() &&
+                               !d.IsDeleted &&
+                               (excludingDepartmentId == null || d.DepartmentId != excludingDepartmentId));
         }
 
         public async Task<Department> CreateDepartmentAsync(Department department)
         {
+            var school = await _context.Schools.Include(s => s.Campus).FirstOrDefaultAsync(s => s.SchoolId == department.SchoolId);
+            if (school == null)
+                throw new Exception("Invalid SchoolId provided");
+
+            // 🔒 Ensure department name is unique within the campus
+            bool nameExists = await IsDepartmentNameExistsAsync(school.CampusId, department.DepartmentName);
+            if (nameExists)
+                throw new Exception("A department with this name already exists within the campus");
+
             _context.Departments.Add(department);
             await _context.SaveChangesAsync();
             return department;
@@ -52,9 +71,14 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Repositories
                 return null;
 
             // Ensure the SchoolId is valid
-            var schoolExists = await _context.Schools.AnyAsync(s => s.SchoolId == department.SchoolId);
-            if (!schoolExists)
+            var school = await _context.Schools.Include(s => s.Campus).FirstOrDefaultAsync(s => s.SchoolId == department.SchoolId);
+            if (school == null)
                 throw new Exception("Invalid SchoolId provided");
+
+            // 🔒 Ensure new name does not conflict within the campus
+            bool nameExists = await IsDepartmentNameExistsAsync(school.CampusId, department.DepartmentName, department.DepartmentId);
+            if (nameExists)
+                throw new Exception("A department with this name already exists within the campus");
 
             _context.Departments.Update(department);
             await _context.SaveChangesAsync();
@@ -98,8 +122,6 @@ namespace Dynamic_RBAMS.Features.DepartmentManagement.Repositories
 
             return true;
         }
-
-
 
         public async Task<bool> SoftDeleteDepartmentAsync(int departmentId)
         {

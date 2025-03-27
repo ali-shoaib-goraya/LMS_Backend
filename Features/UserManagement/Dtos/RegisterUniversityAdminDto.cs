@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Dynamic_RBAMS.Features.UserManagement.Dtos
+namespace LMS.Features.UserManagement.Dtos
 {
     public class RegisterUniversityAdminDto : RegisterBaseDto
     {
         [Required]
-        public int UniversityId { get; set; }
+        public int UniversityId { get; set; } 
 
         [JsonIgnore]
         public new string Type { get; set; } = "UniversityAdmin";

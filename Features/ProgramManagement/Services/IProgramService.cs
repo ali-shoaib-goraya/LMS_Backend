@@ -1,6 +1,6 @@
-﻿using Dynamic_RBAMS.Features.ProgramManagement.Dtos;
+﻿using LMS.Features.ProgramManagement.Dtos;
 
-namespace Dynamic_RBAMS.Features.ProgramManagement.Services
+namespace LMS.Features.ProgramManagement.Services
 {
     public interface IProgramService
     {

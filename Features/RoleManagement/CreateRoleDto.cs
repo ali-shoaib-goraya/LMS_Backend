@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.RoleManagement
+namespace LMS.Features.RoleManagement
 {
     public class CreateRoleDto
     {

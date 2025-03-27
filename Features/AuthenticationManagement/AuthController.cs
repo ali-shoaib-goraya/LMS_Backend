@@ -1,6 +1,6 @@
-﻿using Dynamic_RBAMS.Features.AuthenticationManagement.Dtos;
-using Dynamic_RBAMS.Features.AuthenticationManagement.Services;
-using Dynamic_RBAMS.Features.Common.Dtos;
+﻿using LMS.Features.AuthenticationManagement.Dtos;
+using LMS.Features.AuthenticationManagement.Services;
+using LMS.Features.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]

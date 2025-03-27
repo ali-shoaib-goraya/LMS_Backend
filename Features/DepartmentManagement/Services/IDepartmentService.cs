@@ -1,8 +1,8 @@
-﻿using Dynamic_RBAMS.Features.DepartmentManagement.Dtos;
+﻿using LMS.Features.DepartmentManagement.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Dynamic_RBAMS.Features.DepartmentManagement.Services
+namespace LMS.Features.DepartmentManagement.Services
 {
     public interface IDepartmentService
     {

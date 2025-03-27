@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Dynamic_RBAMS.Features.PermissionsManagement;
-namespace Dynamic_RBAMS.Features.Common.Models
+using LMS.Features.PermissionsManagement;
+namespace LMS.Features.Common.Models
 {
     public class RolePermissionClaim : IdentityRoleClaim<string>
     {

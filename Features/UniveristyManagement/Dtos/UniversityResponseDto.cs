@@ -1,4 +1,4 @@
-﻿namespace Dynamic_RBAMS.Features.UniveristyManagement.Dtos
+﻿namespace LMS.Features.UniveristyManagement.Dtos
 {
     public class UniversityResponseDto
     {

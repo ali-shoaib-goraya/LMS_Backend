@@ -1,4 +1,4 @@
-﻿namespace Dynamic_RBAMS.Features.Common.Repositories
+﻿namespace LMS.Features.Common.Repositories
 {
     public interface IEntityRepository
     {

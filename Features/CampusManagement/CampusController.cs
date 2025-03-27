@@ -1,10 +1,10 @@
-﻿using Dynamic_RBAMS.Features.CampusManagement.Dtos;
-using Dynamic_RBAMS.Features.CampusManagement.Services;
+﻿using LMS.Features.CampusManagement.Dtos;
+using LMS.Features.CampusManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Dynamic_RBAMS.Features.CampusManagement
+namespace LMS.Features.CampusManagement
 {
     //[Authorize]
     [ApiController]

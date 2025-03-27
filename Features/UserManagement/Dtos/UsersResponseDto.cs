@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dynamic_RBAMS.Features.UserManagement.Dtos
+namespace LMS.Features.UserManagement.Dtos
 {
     public class UsersResponseDto
     {

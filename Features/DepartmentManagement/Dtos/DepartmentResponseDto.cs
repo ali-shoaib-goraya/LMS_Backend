@@ -1,11 +1,11 @@
-﻿namespace Dynamic_RBAMS.Features.DepartmentManagement.Dtos
+﻿namespace LMS.Features.DepartmentManagement.Dtos
 {
     public class DepartmentResponseDto
     {
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
         public string? ShortName { get; set; }
-        public string? Vision { get; set; }
+        public string? Vision { get; set; } 
         public string Type { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

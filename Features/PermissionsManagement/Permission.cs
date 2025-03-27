@@ -1,7 +1,7 @@
-﻿using Dynamic_RBAMS.Features.Common.Models;
+﻿using LMS.Features.Common.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace Dynamic_RBAMS.Features.PermissionsManagement
+namespace LMS.Features.PermissionsManagement
 {
     public class Permission
     {

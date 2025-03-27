@@ -1,4 +1,4 @@
-﻿namespace Dynamic_RBAMS.Features.SchoolManagement.Dtos
+﻿namespace LMS.Features.SchoolManagement.Dtos
 {
     public class SchoolResponseDto
     {

@@ -1,7 +1,7 @@
-﻿using Dynamic_RBAMS.Features.Common.Dtos;
-using Dynamic_RBAMS.Features.UniveristyManagement.Dtos;
+﻿using LMS.Features.Common.Dtos;
+using LMS.Features.UniveristyManagement.Dtos;
 
-namespace Dynamic_RBAMS.Features.UniveristyManagement.Services
+namespace LMS.Features.UniveristyManagement.Services
 {
     // IUniversityService.cs
     public interface IUniversityService

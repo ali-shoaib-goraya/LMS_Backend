@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dynamic_RBAMS.Features.UserManagement.Dtos
+namespace LMS.Features.UserManagement.Dtos
 {
     public class RegisterEmployeeDto : RegisterBaseDto
     {

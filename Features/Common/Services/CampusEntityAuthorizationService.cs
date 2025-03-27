@@ -1,10 +1,13 @@
-﻿using Dynamic_RBAMS.Features.Common.Repositories;
-using Dynamic_RBAMS.Features.Common.Services;
-using Dynamic_RBAMS.Features.CourseManagement;
-using Dynamic_RBAMS.Features.DepartmentManagement;
-using Dynamic_RBAMS.Features.ProgramManagement;
-using Dynamic_RBAMS.Features.SchoolManagement;  // Added for School entity
+﻿using LMS.Features.Common.Repositories;
+using LMS.Features.Common.Services;
+using LMS.Features.CourseManagement;
+using LMS.Features.DepartmentManagement;
+using LMS.Features.ProgramManagement;
+using LMS.Features.SchoolManagement;  // Added for School entity
+using LMS.Features.CampusManagement;
 using System;
+using LMS.Features.BatchManagement;
+using LMS.Features.SectionManagement;
 
 public class CampusEntityAuthorizationService : ICampusEntityAuthorizationService
 {
@@ -37,8 +40,11 @@ public class CampusEntityAuthorizationService : ICampusEntityAuthorizationServic
         {
             Department department => department.School?.CampusId,  // Null-safe
             Programs program => program.Department?.School?.CampusId,
+            ProgramBatch programBatch => programBatch.Program?.Department?.School?.CampusId,
+            ProgramBatchSection programBatchSection => programBatchSection.ProgramBatch?.Program?.Department?.School?.CampusId,
             Course course => course.Department?.School?.CampusId,
             School school => school.CampusId,
+            Campus campus => campus.CampusId,
             _ => throw new InvalidOperationException($"Entity type {typeof(TEntity).Name} is not supported.")
         };
     }
