@@ -96,7 +96,7 @@ dotnet ef database update
 dotnet run
 ```
 
-API will be available at: `https://localhost:5001`
+API will be available at: `https://localhost:7244/`
 
 ---
 
