@@ -1,3 +1,4 @@
+
 # 🎓 Final Year Project - LMS Backend
 
 Welcome to the **Learning Management System (LMS) Backend** — a robust and scalable REST API built with **.NET 8**, designed to power a full-featured educational platform with role-based access control, dynamic resource management, and real-time learning engagement.
@@ -41,27 +42,52 @@ Welcome to the **Learning Management System (LMS) Backend** — a robust and sca
 - 🗃 **Entity Framework Core** – ORM for SQL Server
 - 🔐 **ASP.NET Identity** – Auth & Role Management
 - 📦 **AutoMapper** – Clean mapping between Entities and DTOs
-- 🧪 **Swagger** – Live API documentation
+- 📊 **Swagger** – Live API documentation (via Swashbuckle)
 - 📫 **Postman** – API testing and collaboration
 - ☁️ **Azure Blob Storage** – File storage integration
+- 🧾 **Serilog** – Structured logging
+
+---
+
+## 📦 Dependencies
+
+The following NuGet packages are used in this project:
+
+- `Swashbuckle.AspNetCore` (Swagger documentation)
+- `AutoMapper` (object mapping)
+- `Azure.Storage.Blobs` (file uploads)
+- `Microsoft.AspNetCore.Identity.EntityFrameworkCore` (user auth)
+- `Microsoft.EntityFrameworkCore.SqlServer`, `Design`, `Tools`
+- `SendGrid` (email notifications)
+- `Serilog` (logging and diagnostics)
+- `CsvHelper` (CSV data parsing)
+
+You **do not need to install these manually** — just run:
+
+```bash
+dotnet restore
+````
+
+This will restore all required packages from the `.csproj` file automatically.
 
 ---
 
 ## 📁 Getting Started
 
-### 📦 Prerequisites
+### ✅ Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
-- SQL Server or any configured RDBMS
-- Postman (for testing)
-- Azure Blob Storage account (for file uploads)
+* [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
+* SQL Server (or compatible RDBMS)
+* Postman (for API testing)
+* Azure Blob Storage credentials (optional for resource uploads)
 
 ### 🔧 Installation
 
 ```bash
 git clone https://github.com/your-org/fyp-backend.git
 cd fyp-backend
-````
+dotnet restore
+```
 
 ### 🔐 Configuration
 
@@ -84,13 +110,13 @@ Create or update `appsettings.Development.json`:
 }
 ```
 
-> 🔁 Don’t forget to apply migrations if needed.
+### 🗃️ Run Migrations
 
 ```bash
 dotnet ef database update
 ```
 
-### ▶️ Run the Application
+### ▶️ Launch the API
 
 ```bash
 dotnet run
@@ -102,17 +128,17 @@ API will be available at: `https://localhost:7244/`
 
 ## 📘 API Documentation
 
-* ✅ Swagger UI: https://localhost:7244/swagger/index.html)
+* Swagger UI: [`https://localhost:7244/swagger/index.html`](https://localhost:7244/swagger/index.html)
 
 ---
 
 ## 🧪 Key Project Concepts
 
-* **Clean Architecture**: Layered structure (Controllers, Services, Repositories)
-* **DTO Pattern**: Use of Request/Response DTOs for all endpoints
-* **Unit of Work + Repository Pattern**: To ensure transactional consistency
-* **Global Exception Handling**: Custom middleware for consistent error responses
-* **Validation**: Using FluentValidation or DataAnnotations
+* **Clean Architecture** – Layered structure (Controllers, Services, Repositories)
+* **DTO Pattern** – Request/Response DTOs for separation of concerns
+* **Unit of Work + Repository Pattern** – Ensures transactional consistency
+* **Global Exception Handling** – Middleware for unified error responses
+* **Validation** – Via `DataAnnotations` and/or `FluentValidation`
 
 ---
 
@@ -131,4 +157,3 @@ This project is licensed under the [MIT License](LICENSE).
 > 🧠 Designed for academic excellence. Built with precision.
 
 ```
-
