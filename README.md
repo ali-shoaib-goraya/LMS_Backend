@@ -102,8 +102,7 @@ API will be available at: `https://localhost:5001`
 
 ## 📘 API Documentation
 
-* ✅ Swagger UI: [https://localhost:5001/swagger](https://localhost:5001/swagger)
-* 🧪 Postman Collection: *(Add your exported collection link here)*
+* ✅ Swagger UI: https://localhost:7244/swagger/index.html)
 
 ---
 
@@ -133,5 +132,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 ```
 
-Let me know if you want a matching `Swagger` UI theme or documentation grouping next!
-```
