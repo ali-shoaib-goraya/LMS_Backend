@@ -8,7 +8,7 @@ Welcome to the **Learning Management System (LMS) Backend** — a robust and sca
 ---
 ## 📽️ Demo
 
-🎬 [Watch the Demo Video](https://www.youtube.com/watch?v=iNSvIdEwFKw) 
+🎬 [Watch the Demo Video](https://youtu.be/JADdU2-Mdng?si=K_rDlLLCgE16-XgP) 
 
 ---
 
