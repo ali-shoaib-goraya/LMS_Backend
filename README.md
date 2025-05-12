@@ -6,6 +6,11 @@ Welcome to the **Learning Management System (LMS) Backend** — a robust and sca
 > 🛠️ This backend supports all academic, administrative, and interactive functionalities of the LMS through secure and well-documented APIs.
 
 ---
+## 📽️ Demo
+
+🎬 [Watch the Demo Video](https://www.youtube.com/watch?v=iNSvIdEwFKw) 
+
+---
 
 ## 🚀 Core Features
 
@@ -84,8 +89,8 @@ This will restore all required packages from the `.csproj` file automatically.
 ### 🔧 Installation
 
 ```bash
-git clone https://github.com/your-org/fyp-backend.git
-cd fyp-backend
+git clone https://github.com/ali-shoaib-goraya/LMS_Backend.git
+cd LMS_Backend
 dotnet restore
 ```
 
